@@ -48,7 +48,7 @@ func (store *store) save() error {
 		return err
 	}
 
-	return ioutil.WriteFile(store.file, data, 0700)
+	return ioutil.WriteFile(store.file, data, 0600)
 }
 
 func (store *store) updateLastSync(newTime time.Time) error {
