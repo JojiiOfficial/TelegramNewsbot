@@ -19,7 +19,7 @@ func newNewsBot(config *Config) *newsBot {
 		return nil
 	}
 
-	log.Printf("Authorized on account %s", bot.Self.UserName)
+	log.Printf("Bot started on account %s", bot.Self.UserName)
 
 	return &newsBot{
 		BotAPI:    bot,

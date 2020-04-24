@@ -22,12 +22,12 @@ func main() {
 	}
 
 	log.Println("Localtime:", time.Now().String())
+	log.Println("Refreshinterval:", config.getRefreshInterval())
 
 	bot := newNewsBot(config)
 	if bot == nil {
 		return
 	}
-	log.Println("Bot started")
 
 	store := newStore(config.getStorePath())
 	if err := store.load(); err != nil {
@@ -36,18 +36,17 @@ func main() {
 	}
 
 	newsClient := newNewsClient(config)
-	log.Println("Newsclient connected")
 
 	for {
 		news := newsClient.checkNews(store.LastSync)
 		bot.sendNews(news)
-		time.Sleep(5 * time.Minute)
 
 		err := store.updateLastSync(time.Now())
 		if err != nil {
 			log.Fatal(err)
 		}
 
+		time.Sleep(config.getRefreshInterval())
 	}
 }
 

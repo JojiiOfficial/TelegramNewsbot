@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 const defaultConfigFile = "./data/config.json"
@@ -24,6 +25,8 @@ type Config struct {
 	Country   string
 
 	Debug bool
+
+	NewsRefreshInterval time.Duration
 }
 
 func loadConfig(file string) *Config {
@@ -81,13 +84,14 @@ func createConfig(file string) {
 
 func getDefaultConfig(file string) Config {
 	return Config{
-		file:          file,
-		ChannelID:     0,
-		NewsAPIToken:  "NewsTokenHere",
-		TelegramToken: "TelegramTokenHere",
-		Country:       "de",
-		StoreFile:     "./data/store.json",
-		Debug:         false,
+		file:                file,
+		ChannelID:           0,
+		NewsAPIToken:        "NewsTokenHere",
+		TelegramToken:       "TelegramTokenHere",
+		Country:             "de",
+		StoreFile:           "./data/store.json",
+		Debug:               false,
+		NewsRefreshInterval: 5 * time.Minute,
 	}
 }
 
@@ -125,4 +129,12 @@ func (config *Config) getStorePath() string {
 	}
 
 	return filepath.Clean(path)
+}
+
+func (config *Config) getRefreshInterval() time.Duration {
+	if config.NewsRefreshInterval == 0 {
+		return 5 * time.Minute
+	}
+
+	return config.NewsRefreshInterval
 }
