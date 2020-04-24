@@ -34,13 +34,13 @@ func (newsClient *newsClient) checkNews(lastCheck time.Time) []article {
 	var newNews []article
 
 	for _, a := range newsResponse.Articles {
-		if a.PublishedAt.Unix() > lastCheck.Unix() {
+		if a.PublishedAt.Local().Unix() > lastCheck.Unix() {
 			log.Println("New post:", a.Title)
 			newNews = append(newNews, article{
 				Article: a,
 			})
 		} else if newsClient.config.Debug {
-			fmt.Println("Old Post:", "["+a.PublishedAt.String()+"]", a.Title)
+			fmt.Println("Old Post:", "["+a.PublishedAt.Local().String()+"]", a.Title)
 		}
 	}
 

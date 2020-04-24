@@ -7,8 +7,8 @@ import (
 )
 
 func TestArticleTitle(t *testing.T) {
-	rawTitle := "I'am a nice and interesting title"
-	article := article{newsapi.Article{Title: rawTitle + "- jojii"}}
+	rawTitle := "Der Börsen-Tag:14:34 BMW fährt schrittweise Produktion hoch"
+	article := article{newsapi.Article{Title: rawTitle + " - n-tv NACHRICHTEN"}}
 
 	formattedTitle := article.getTitle()
 

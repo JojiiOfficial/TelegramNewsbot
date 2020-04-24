@@ -22,26 +22,30 @@ func (a SortByPublished) Less(i, j int) bool {
 }
 
 func (article *article) getShortDescription() string {
+	if len(article.Description) == 0 {
+		return ""
+	}
+
 	bag := tldr.New()
 	result, err := bag.Summarize(article.Description, 1)
 	if len(result) == 0 || err != nil {
 		if err != nil {
 			fmt.Println(err)
 		}
-		return article.Description
+		return article.Description + "\n"
 	}
 
-	return result[0]
+	return result[0] + "\n"
 }
 
 func (article *article) getTitle() string {
 	if strings.Contains(article.Title, "-") {
-		return strings.TrimSpace(article.Title[:strings.LastIndex(article.Title, "-")])
+		return strings.TrimSpace(article.Title[:strings.LastIndex(article.Title, " - ")])
 	}
 
 	return strings.TrimSpace(article.Title)
 }
 
 func (article *article) String() string {
-	return fmt.Sprintf("%s\n\n%s\n\n%s", article.getTitle(), article.getShortDescription(), article.URL)
+	return fmt.Sprintf("%s\n\n%s\n%s", article.getTitle(), article.getShortDescription(), article.URL)
 }
